@@ -17,6 +17,14 @@
 		<lombok.version>1.18.34</lombok.version>
 	</properties>
 
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>GitHub OWNER Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/anshuman18/REPOSITORY</url>
+		</repository>
+	</distributionManagement>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
