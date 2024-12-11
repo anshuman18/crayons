@@ -6,13 +6,15 @@
 	<artifactId>crayons</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
-
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jdk.version>23</jdk.version>
 		<maven.compiler.source>${jdk.version}</maven.compiler.source>
 		<maven.compiler.target>${jdk.version}</maven.compiler.target>
-		<jacoco.version>0.8.8</jacoco.version>
+		<jacoco.version>0.8.12</jacoco.version>
+		<maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
+		<maven.compiler.proc>full</maven.compiler.proc>
+		<lombok.version>1.18.34</lombok.version>
 	</properties>
 
 	<dependencies>
@@ -37,7 +39,7 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.18.26</version>
+			<version>${lombok.version}</version>
 		</dependency>
 	</dependencies>
 
@@ -46,7 +48,11 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.11.0</version>
+				<version>${maven-compiler-plugin.version}</version>
+				<configuration>
+					<source>${jdk.version}</source>
+					<target>${jdk.version}</target>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

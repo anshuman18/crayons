@@ -12,6 +12,9 @@ import java.util.Queue;
 import com.anshu.cyns.model.BTNode;
 
 /**
+ * Binary Tree console renderer
+ * 
+ * @author anshumankumar
  * 
  */
 public class BTConsoleRenderer {
@@ -158,7 +161,7 @@ public class BTConsoleRenderer {
   private <T> void renderNodeLinkHelper(T data, int startIndx, int endIndx, int mid,
       List<StringBuilder> nodeLinks) {
 
-    int size =data ==null?1: data.toString().length();
+    int size = data == null ? 1 : data.toString().length();
 
     int lines = (mid - startIndx) / 2;
     for (int i = 1; i <= lines; i++) {
