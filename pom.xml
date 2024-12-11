@@ -21,7 +21,7 @@
 		<repository>
 			<id>github</id>
 			<name>GitHub OWNER Apache Maven Packages</name>
-			<url>https://maven.pkg.github.com/anshuman18/REPOSITORY</url>
+			<url>https://maven.pkg.github.com/anshuman18/crayons</url>
 		</repository>
 	</distributionManagement>
 
@@ -135,6 +135,34 @@
 
 				</executions>
 			</plugin>
+
+<!---
+			<plugin>
+				<groupId>com.github.github</groupId>
+				<artifactId>site-maven-plugin</artifactId>
+				<version>0.12</version>
+				<configuration>
+					<message>Maven artifacts for ${project.version}</message>
+					<noJekyll>true</noJekyll>
+					<outputDirectory>${project.build.directory}</outputDirectory>
+					<branch>refs/heads/${branch-name}</branch>
+					<includes>
+						<include>**/*</include>
+					</includes>
+					<merge>true</merge>
+					<repositoryName>${repository-name}</repositoryName>
+					<repositoryOwner>${repository-owner}</repositoryOwner>
+					<server>github</server>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>site</goal>
+						</goals>
+						<phase>deploy</phase>
+					</execution>
+				</executions>
+			</plugin> -->
 
 		</plugins>
 	</build>
