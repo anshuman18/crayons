@@ -21,30 +21,40 @@ public class BTConsoleRenderer {
 
   private static final String SPACE = "  ";
   private static final String LINK = "+";
-  public static final String ANSI_GREEN_BCK = "\u001B[42m";
-  public static final String ANSI_RED_BACKGROUND = "\u001B[41m";
+  private static final String ANSI_GREEN_BCK = "\u001B[42m";
+  private static final String ANSI_RED_BACKGROUND = "\u001B[41m";
   // Custom declaration
-  public static final String ANSI_YELLOW = "\u001B[33m";
+  private static final String ANSI_YELLOW = "\u001B[33m";
   // Declaring ANSI_RESET so that we can reset the color
-  public static final String ANSI_RESET = "\u001B[0m";
+  private static final String ANSI_RESET = "\u001B[0m";
 
 
-  public <T> BTNode<T> buildMinHeightBST(T[] sortedInput) {
-    return buildMinHeightBST(sortedInput, 0, sortedInput.length - 1);
+  /**
+   * Build minimum height Binary Tree from the input array and return the root node.
+   * 
+   * @param <T>
+   * @param in
+   * @return
+   */
+  public <T> BTNode<T> buildMinHeightBST(T[] in) {
+    return buildMinHeightBST(in, 0, in.length - 1);
   }
 
-  private <T> BTNode<T> buildMinHeightBST(T[] sortedInput, int sIndx, int eIndx) {
+  private <T> BTNode<T> buildMinHeightBST(T[] in, int sIndx, int eIndx) {
     if (sIndx > eIndx) {
       return null;
     }
 
     int mid = (sIndx + eIndx) / 2;
-    BTNode<T> root = new BTNode<>(sortedInput[mid]);
-    root.setLeft(buildMinHeightBST(sortedInput, sIndx, mid - 1));
-    root.setRight(buildMinHeightBST(sortedInput, mid + 1, eIndx));
+    BTNode<T> root = new BTNode<>(in[mid]);
+    root.setLeft(buildMinHeightBST(in, sIndx, mid - 1));
+    root.setRight(buildMinHeightBST(in, mid + 1, eIndx));
     return root;
   }
 
+  /**
+   * DFS to find the maximum depth of the Binary Tree
+   */
   public <T> int maxDepth(BTNode<T> root) {
     if (root == null) {
       return 0;
@@ -56,6 +66,16 @@ public class BTConsoleRenderer {
   }
 
 
+  /**
+   * 
+   * Given the Binary Tree root node will return level wise nodes data. The response will also
+   * include null value to preserving ordering and parents child relationship so that serialisation
+   * and de-serialisation of Binary Tree can be done
+   * 
+   * @param <T>
+   * @param in
+   * @return
+   */
   public <T> List<List<T>> getLevelWiseSerialisedData(BTNode<T> in) {
     List<List<T>> levelWiseData = new ArrayList<>();
     Queue<BTNode<T>> q = new LinkedList<>();
@@ -64,7 +84,7 @@ public class BTConsoleRenderer {
 
     while (!q.isEmpty()) {
 
-      boolean childFound = enqueLevelNodes(q);
+      boolean childFound = enqueLevelNodes(q, q.size());
       if (childFound) {
         levelWiseData.add(q.stream()//
             .map(n -> n != null ? n.getData() : null)//
@@ -76,35 +96,45 @@ public class BTConsoleRenderer {
     return levelWiseData;
   }
 
-  private <T> boolean enqueLevelNodes(Queue<BTNode<T>> q) {
+  private <T> boolean enqueLevelNodes(Queue<BTNode<T>> q, int size) {
     boolean childFound = false;
 
-    int size = q.size();
     for (int i = 0; i < size; i++) {
       BTNode<T> current = q.poll();
       if (current != null) {
+
         if (!childFound && (current.getLeft() != null || current.getRight() != null)) {
           childFound = true;
         }
+
         q.add(current.getLeft());
         q.add(current.getRight());
       }
+
     }
 
     return childFound;
   }
 
-  public <T> List<String> render(BTNode<T> n) {
-    if (n == null) {
+  /**
+   * 
+   * Given the Binary tree root node will return renderable contents as List of String
+   * 
+   * @param <T>
+   * @param root to the BT
+   * @return
+   */
+  public <T> List<String> render(BTNode<T> root) {
+    if (root == null) {
       return Collections.emptyList();
     }
 
-    int maxDepth = maxDepth(n);
+    int maxDepth = maxDepth(root);
     int nodesSizeAtMaxDepth = (int) Math.pow(2, maxDepth - 1.0);
     int maxColSize = nodesSizeAtMaxDepth + 3 * (nodesSizeAtMaxDepth - 1) + 2;
 
     List<StringBuilder> output = new ArrayList<>();
-    List<List<T>> levelNodes = getLevelWiseSerialisedData(n);
+    List<List<T>> levelNodes = getLevelWiseSerialisedData(root);
 
     int depth = 0;
     for (List<T> lNodes : levelNodes) {
@@ -152,13 +182,13 @@ public class BTConsoleRenderer {
     nodeLinks.add(sb);
 
     if (!leaf) {
-      renderNodeLinkHelper(data, startIndx, endIndx, mid, nodeLinks);
+      renderLinkHelper(data, startIndx, endIndx, mid, nodeLinks);
     }
 
     return nodeLinks;
   }
 
-  private <T> void renderNodeLinkHelper(T data, int startIndx, int endIndx, int mid,
+  private <T> void renderLinkHelper(T data, int startIndx, int endIndx, int mid,
       List<StringBuilder> nodeLinks) {
 
     int size = data == null ? 1 : data.toString().length();
@@ -201,8 +231,6 @@ public class BTConsoleRenderer {
 
   public static void main(String[] args) {
     BTConsoleRenderer p = new BTConsoleRenderer();
-    // BTNode<Integer> node = p.buildMinHeightBST(new Integer[] {10, 15, 20, 25, 35, 45, 50});
-    /// BTNode<Integer> node = p.buildMinHeightBST(new Integer[] {1, 2, 3, 4, 5, 6, 7});
     BTNode<Integer> node = p
         .buildMinHeightBST(new Integer[] {2, 4, 6, 8, 10, 15, 20, 25, 35, 50, 55, 70, 89, 99, 100});
     for (String line : p.render(node)) {
