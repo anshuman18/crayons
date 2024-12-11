@@ -17,7 +17,7 @@ import com.anshu.cyns.model.BTNode;
 public class BTConsoleRenderer {
 
   private static final String SPACE = "  ";
-  private static final String LINK = "*";
+  private static final String LINK = "+";
   public static final String ANSI_GREEN_BCK = "\u001B[42m";
   public static final String ANSI_RED_BACKGROUND = "\u001B[41m";
   // Custom declaration
