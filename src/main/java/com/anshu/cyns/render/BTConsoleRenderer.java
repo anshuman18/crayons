@@ -118,6 +118,32 @@ public class BTConsoleRenderer {
 
   /**
    * 
+   * Given BT level nodes will return renderable contents as List of String
+   * 
+   * @param <T>
+   * @param root to the BT
+   * @return
+   */
+  public <T> List<String> render(List<List<T>> levelNodes) {
+    if (levelNodes == null || levelNodes.isEmpty()) {
+      return Collections.emptyList();
+    }
+
+    int maxDepth = levelNodes.size();
+    int nodesSizeAtMaxDepth = (int) Math.pow(2, maxDepth - 1.0);
+    int maxColSize = nodesSizeAtMaxDepth + 3 * (nodesSizeAtMaxDepth - 1) + 2;
+
+    List<StringBuilder> output = new ArrayList<>();
+    int depth = 0;
+    for (List<T> lNodes : levelNodes) {
+      output.addAll(renderLevelNodesHelper(lNodes, 0, maxColSize - 1, (depth == maxDepth - 1)));
+      depth++;
+    }
+    return output.stream().map(StringBuilder::toString).toList();
+  }
+
+  /**
+   * 
    * Given the Binary tree root node will return renderable contents as List of String
    * 
    * @param <T>
@@ -129,19 +155,7 @@ public class BTConsoleRenderer {
       return Collections.emptyList();
     }
 
-    int maxDepth = maxDepth(root);
-    int nodesSizeAtMaxDepth = (int) Math.pow(2, maxDepth - 1.0);
-    int maxColSize = nodesSizeAtMaxDepth + 3 * (nodesSizeAtMaxDepth - 1) + 2;
-
-    List<StringBuilder> output = new ArrayList<>();
-    List<List<T>> levelNodes = getLevelWiseSerialisedData(root);
-
-    int depth = 0;
-    for (List<T> lNodes : levelNodes) {
-      output.addAll(renderLevelNodesHelper(lNodes, 0, maxColSize - 1, (depth == maxDepth - 1)));
-      depth++;
-    }
-    return output.stream().map(StringBuilder::toString).toList();
+    return render(getLevelWiseSerialisedData(root));
   }
 
   private <T> List<StringBuilder> renderLevelNodesHelper(List<T> lNodes, int startIndx, int endIndx,
